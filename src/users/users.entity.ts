@@ -20,7 +20,7 @@ export class User {
   @Column()
   password: string;
 
-  @OneToOne(() => Profile)
+  @OneToOne(() => Profile, (profile) => profile.user)
   @JoinColumn()
   profile: Profile;
 

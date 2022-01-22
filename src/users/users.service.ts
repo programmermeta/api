@@ -1,6 +1,7 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { hash } from 'bcrypt';
+import { Profile } from 'src/profiles/profiles.entity';
 import { Repository } from 'typeorm';
 import { User } from './users.entity';
 
@@ -37,5 +38,14 @@ export class UsersService {
       ok: true,
       user,
     };
+  }
+
+  async findUserById(userId: string) {
+    return this.usersRepository.findOne(userId, { relations: ['profile'] });
+  }
+
+  async addProfile(user: User, profile: Profile) {
+    user.profile = profile;
+    return this.usersRepository.save(user);
   }
 }

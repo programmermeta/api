@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/users/users.entity';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Profile {
@@ -8,6 +9,9 @@ export class Profile {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ default: 0 })
   rank: number;
+
+  @OneToOne(() => User, (user) => user.profile)
+  user: User;
 }

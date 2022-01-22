@@ -9,13 +9,21 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
+  login(@Request() req) {
+    return this.getUser(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
   getProfile(@Request() req) {
-    return req.user;
+    return this.getUser(req.user);
+  }
+
+  private async getUser(user) {
+    const payload = await this.authService.login(user);
+    return {
+      ok: true,
+      ...payload,
+    };
   }
 }
