@@ -5,12 +5,17 @@ import { UsersModule } from './users/users.module';
 import { ProfilesModule } from './profiles/profiles.module';
 import { PostsModule } from './posts/posts.module';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      cache: true,
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url: 'postgres://uxljcqkc:sQTu9LRb9FkQS97iTz4EhXHAuY289Mx4@satao.db.elephantsql.com/uxljcqkc',
+      url: process.env.DB_URL,
       autoLoadEntities: true,
       // synchronize: true,
       logging: true,
