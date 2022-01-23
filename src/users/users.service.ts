@@ -40,12 +40,19 @@ export class UsersService {
     };
   }
 
-  async findUserById(userId: string) {
+  findUserById(userId: string) {
     return this.usersRepository.findOne(userId, { relations: ['profile'] });
   }
 
-  async addProfile(user: User, profile: Profile) {
+  addProfile(user: User, profile: Profile) {
     user.profile = profile;
     return this.usersRepository.save(user);
+  }
+
+  async checkUsernameAvailability(username: string) {
+    const user = await this.usersRepository.findOne({ where: { username } });
+    return {
+      ok: !user,
+    };
   }
 }
