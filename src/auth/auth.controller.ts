@@ -10,12 +10,14 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   login(@Request() req) {
+    console.log({ local: req.user });
     return this.getUser(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
   getProfile(@Request() req) {
+    console.log({ jwt: req.user });
     return this.getUser(req.user);
   }
 

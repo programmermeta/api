@@ -12,6 +12,9 @@ export class Post {
   @Column({ nullable: false })
   message: string;
 
+  @Column({ nullable: true })
+  codeSnippet: string;
+
   @Column({ default: 0 })
   positiveCount: number;
 

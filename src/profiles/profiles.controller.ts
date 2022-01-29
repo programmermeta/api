@@ -22,7 +22,6 @@ export class ProfilesController {
   @Post()
   async createProfile(@Request() req, @Body('email') email: string) {
     const existingUser = await this.usersService.findUserById(req.user.id);
-    console.log('Existing: ', existingUser);
 
     if (existingUser.profile) {
       throw new ConflictException({
