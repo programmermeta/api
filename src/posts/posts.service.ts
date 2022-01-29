@@ -11,6 +11,15 @@ export class PostsService {
     private readonly usersService: UsersService,
   ) {}
 
+  async getPosts() {
+    const posts = await this.postsRepository.find({ relations: ['user'] });
+
+    return {
+      ok: true,
+      posts,
+    };
+  }
+
   async createPost(
     title: string,
     message: string,
@@ -25,6 +34,22 @@ export class PostsService {
       codeSnippet,
       user,
     });
+
+    await this.postsRepository.save(post);
+
+    return {
+      ok: true,
+      post,
+    };
+  }
+
+  async votePost(postId: string, type: 'positive' | 'negative') {
+    const post = await this.postsRepository.findOne(postId);
+    if (type === 'positive') {
+      post.positiveCount++;
+    } else {
+      post.negativeCount++;
+    }
 
     await this.postsRepository.save(post);
 

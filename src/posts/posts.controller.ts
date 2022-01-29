@@ -1,12 +1,25 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { PostsService } from './posts.service';
 
 @Controller('posts')
+@UseGuards(JwtAuthGuard)
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @Get()
+  getPosts() {
+    return this.postsService.getPosts();
+  }
+
   @Post()
   createPost(
     @Request() req,
@@ -20,5 +33,13 @@ export class PostsController {
       req.user.id,
       codeSnippet,
     );
+  }
+
+  @Get('/vote/:id/:type')
+  votePost(
+    @Param('id') id: string,
+    @Param('type') type: 'positive' | 'negative',
+  ) {
+    return this.postsService.votePost(id, type);
   }
 }
